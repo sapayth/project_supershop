@@ -1,22 +1,22 @@
 <?php
 	if( isset($_POST["btnDelete"]) ) {
-		$id = $_POST["hdnId"];
+		$id = $_POST["hdnEditId"];
 		if($db->query("delete from users where id = '$id'")) {
 			echo "Deleted";
 		}
 	}
 	
 	if( isset($_POST["btnSave"]) ) {
-		$edit_id = $_POST["hdnEditId"];
+		$edit_id = $_POST["hdnSaveId"];
 		$name = $_POST["txtName"];
-		$email = $_POST["txtEmail"];		
-	}
-	
-	if( isset($_POST["btnEdit"]) ) {
-		$edit_id = $_POST["hdnEditId"];
-		
-		echo "$edit_id";
-		
+		$email = $_POST["txtEmail"];
+		$role_id = $_POST["cmbRole"];
+		$query = "update users set name='$name', email='$email', role_id=$role_id where id=$edit_id";
+		if($db->query($query)) {
+			echo "Updated";
+		} else {
+			echo "Problem updating user";
+		}
 	}
 ?>
 <!-- Content Header (Page header) -->
@@ -44,36 +44,46 @@
             </thead>
             <tbody>
             <?php
-            	$table = $db->query("select u.id, u.name, r.role_name, email from users u, user_role r where u.role_id = r.role_id");
+            	$table = $db->query("select u.id, u.name, r.role_name, r.role_id, email from users u, user_role r where u.role_id = r.role_id");
 				
-				echo "<form action='#' method='post'>";
-				while( list($_id, $_name, $_role_id, $_email) = $table->fetch_row() ) {
+				
+				while( list($_id, $_name, $_role_name, $_role_id, $_email) = $table->fetch_row() ) {
 					if( isset($_POST["btnEdit"]) && $_POST["hdnEditId"] == $_id) {
-						echo "<tr>";
-						echo "<td><input type='text' value='$_name' name='txtName' /></td>";
-						echo "<td><select class='form-control select2 select2-hidden-accessible' style='width: 100%;' tabindex='-1' aria-hidden='true' name='cmbRole'>";
-				
-        echo "</select></td>";
-						echo "<td><input type='text' value='$_email' name='txtEmail' /></td>";
-												
-						echo "<td>";
-						echo "<input type='hidden' value='$_id' name='hdnSaveId' />";
-						echo "<button type='submit' name='btnSave' class='btn btn-primary'><i class='fa fa-edit'></i> Save</button>&nbsp;&nbsp;";
-						echo "<button type='submit' name='btnDelete' class='btn btn-danger'><i class='fa fa-trash'></i> Delete</button>";
-						echo "</td>";
-						echo "</tr>";
+						echo "<form action='#' method='post'>";
+							echo "<tr>";
+							echo "<td><input type='text' value='$_name' name='txtName' /></td>";
+							echo "<td><select class='form-control select2 select2-hidden-accessible' style='width: 100%;' aria-hidden='true' name='cmbRole'>";
+							$roles = $db->query("select role_id, role_name from user_role");
+							while( list($_temp_role_id, $_role) = $roles->fetch_row() ) {					
+								if($_role_id == $_temp_role_id){
+									echo "<option value='$_temp_role_id' selected='selected'>$_role</option>";
+								} else {
+									echo "<option value='$_temp_role_id'>$_role</option>";
+								}
+							}					
+	        				echo "</select></td>";
+							echo "<td><input type='text' value='$_email' name='txtEmail' /></td>";
+													
+							echo "<td>";
+							echo "<input type='hidden' value='$_id' name='hdnSaveId' />";
+							echo "<button type='submit' name='btnSave' class='btn btn-primary'><i class='fa fa-save'></i> Save</button>&nbsp;&nbsp;";
+							echo "<button type='submit' name='btnDelete' class='btn btn-danger'><i class='fa fa-trash'></i> Delete</button>";
+							echo "</td>";
+							echo "</tr>";
+						echo "</form>";
 					} else {
-						echo "<tr>";
-						echo "<td>$_name</td><td>$_role_id</td><td>$_email</td>";
-						echo "<td>";
-						echo "<input type='hidden' value='$_id' name='hdnEditId' />";
-						echo "<button type='submit' name='btnEdit' class='btn btn-primary'><i class='fa fa-edit'></i> Edit</button>&nbsp;&nbsp;";
-						echo "<button type='submit' name='btnDelete' class='btn btn-danger'><i class='fa fa-trash'></i> Delete</button>";
-						echo "</td>";
-						echo "</tr>";
+						echo "<form action='#' method='post'>";
+							echo "<tr>";
+							echo "<td>$_name</td><td>$_role_name</td><td>$_email</td>";
+							echo "<td>";
+							echo "<input type='hidden' value='$_id' name='hdnEditId' />";
+							echo "<button type='submit' name='btnEdit' class='btn btn-primary'><i class='fa fa-edit'></i> Edit</button>&nbsp;&nbsp;";
+							echo "<button type='submit' name='btnDelete' class='btn btn-danger'><i class='fa fa-trash'></i> Delete</button>";
+							echo "</td>";
+							echo "</tr>";
+						echo "</form>";
 					}
 				}
-				echo "</form>";
 			?>
             </tbody>
           </table>
