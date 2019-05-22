@@ -23,7 +23,7 @@
             </thead>
             <tbody>
             <?php
-            	$table = $db->query("select name, role_id, email  from users");
+            	$table = $db->query("select u.name, r.role_name, u.email from users u, user_role r where u.role_id = r.role_id");
 				
 				while( list($_name, $_role_id, $_email) = $table->fetch_row() ) {
 					echo "<tr>";
