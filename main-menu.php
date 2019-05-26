@@ -4,7 +4,7 @@
     <?php
 		include("submenu/dashboard.php");
 		include("submenu/user-management.php");
-		include("submenu/product-management.php");
+		include("submenu/inventory-management.php");
 		// include("submenu/layout_options.php");
 		// include("submenu/widgets.php");
 		// include("submenu/charts.php");

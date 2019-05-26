@@ -33,8 +33,7 @@
 				$table = $db->query("select role_id, role_name from user_role");
 				while( list($_id, $_role) = $table->fetch_row() ) {					
 					echo "<option value='$_id'>$_role</option>";	
-				}
-				
+				}				
 			?>
         </select>
       </div>

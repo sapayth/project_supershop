@@ -24,6 +24,12 @@
 			case "manage-product" :
 				include("pages/product/manage-product.php");
 				break;
+			case "add-brand" :
+				include("pages/brand/add-brand.php");
+				break;
+			case "add-supplier" :
+				include("pages/supplier/add-supplier.php");
+				break;
 				
 			default :
 				include("pages/welcome.php");
