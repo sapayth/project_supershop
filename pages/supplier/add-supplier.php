@@ -16,7 +16,7 @@
 				<div class="col-xs-4">
 					<div class="form-group">
 						  <label for="">Contact No</label>
-						  <input type="email" class="form-control" id="" placeholder="Contact No">
+						  <input type="text" class="form-control" id="" placeholder="Contact No">
 					</div>
 				</div>
 				<div class="col-xs-4">

@@ -14,13 +14,18 @@
         <!-- /.box-body -->
         
         <div class="box-footer">
-        <button type="submit" class="btn btn-primary" name="btnAddBrand">Add Brand</button>
+        	<button type="submit" class="btn btn-primary" name="btnAddBrand">Add Brand</button>
         </div>
     </form>
 </div>
 <?php
 	if(isset($_POST["btnAddBrand"])){
 		$brand = $_POST["txtBrandName"];
-		$db->query("insert into brands(name) values('$brand')");
+		$addQuery = "insert into brands(name) values('$brand')";
+		if($db->query($addQuery)) {
+			echo "Brand Added.";
+		} else {
+			echo "There is a problem.";	
+		}
 	}
 ?>
